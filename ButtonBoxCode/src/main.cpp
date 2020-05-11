@@ -3,7 +3,6 @@
 #include <Adafruit_GFX.h>
 #include "Adafruit_LEDBackpack.h"
 #include "Adafruit_NeoPixel.h"
-#include "main.h"
 
 #define ARCADE_N (14)
 #define ARCADE_S (15)
@@ -29,6 +28,33 @@
 
 #define DEBUG (0)
 
+void chase(uint32_t c);
+
+enum class Leds {
+    Blue1,
+    Blue2,
+    Blue3,
+    Red1,
+    Red2,
+    Red3,
+    Toggles
+};
+
+struct ButtonArray {
+    bool blue1;
+    bool blue2;
+    bool blue3;
+    bool red1;
+    bool red2;
+    bool red3;
+    bool up;
+    bool down;
+    bool left;
+    bool right;
+};
+
+void SwitchLed(Leds led, uint8_t enabled);
+void HandleButtons();
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDS, NEOPIXEL_RING, NEO_GRB + NEO_KHZ800);
 Adafruit_7segment matrix = Adafruit_7segment();
@@ -66,9 +92,30 @@ void setup() {
   digitalWrite(LED_COL_2, LOW);
   digitalWrite(LED_COL_3, LOW);
   delay(1000);
-  // LED1 on 
-  digitalWrite(LED_ROW_1, LOW);
-  digitalWrite(LED_COL_1, HIGH);
+
+  SwitchLed(Leds::Blue1, 1);
+  delay(1000);
+  SwitchLed(Leds::Blue1, 0);
+  delay(1000);
+  SwitchLed(Leds::Blue2, 1);
+  delay(1000);
+  SwitchLed(Leds::Blue2, 0);
+  delay(1000);
+  SwitchLed(Leds::Blue3, 1);
+  delay(1000);
+  SwitchLed(Leds::Blue3, 0);
+  delay(1000);
+  SwitchLed(Leds::Red1, 1);
+  delay(1000);
+  SwitchLed(Leds::Red1, 0);
+  delay(1000);
+  SwitchLed(Leds::Red2, 1);
+  delay(1000);
+  SwitchLed(Leds::Red2, 0);
+  delay(1000);
+  SwitchLed(Leds::Red3, 1);
+  delay(1000);
+  SwitchLed(Leds::Red3, 0);
   delay(1000);
 }
 
@@ -93,7 +140,7 @@ void chase(uint32_t c) {
       strip.setPixelColor(i  , c); // Draw new pixel
       strip.setPixelColor(i-4, 0); // Erase pixel a few steps back
       strip.show();
-      delay(15);
+      delay(30);
   }
 }
 
@@ -111,32 +158,34 @@ void SwitchLed(Leds led, uint8_t enabled){
     break;
     case Leds::Blue2:
     row = LED_ROW_1;
-      column = LED_COL_1;
+      column = LED_COL_2;
     break;
     case Leds::Blue3:
     row = LED_ROW_1;
-      column = LED_COL_1;
+      column = LED_COL_3;
     break;
     case Leds::Red1:
-    row = LED_ROW_1;
+    row = LED_ROW_2;
       column = LED_COL_1;
     break;
     case Leds::Red2:
-    row = LED_ROW_1;
-      column = LED_COL_1;
+    row = LED_ROW_2;
+      column = LED_COL_2;
     break;
     case Leds::Red3:
-    row = LED_ROW_1;
-      column = LED_COL_1;
+    row = LED_ROW_2;
+      column = LED_COL_3;
     break;
     default:
     break;
   }
 
   if(led == Leds::Toggles) {
-
+    digitalWrite(TOGGLE_LEDS, enabled);
+  
   } else {
-    
+    digitalWrite(row, inverted);
+    digitalWrite(column, enabled);
   }
   
   
