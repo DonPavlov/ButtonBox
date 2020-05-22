@@ -26,7 +26,7 @@
 #define TOGGLE_LEDS (13)
 #define N_LEDS (16)
 
-#define DEBUG 1
+#define DEBUG 0
 
 #if (DEBUG == 0)
 void chase(uint32_t c);
@@ -140,21 +140,31 @@ void loop() {
   SwitchLed(Leds::Red1, 1);
   SwitchLed(Leds::Red2, 1);
   SwitchLed(Leds::Red3, 1);
+  #if (DEBUG == 0)
   chase(strip.Color(255, 0, 0)); // Red
+  #endif
   SwitchLed(Leds::Blue1, 0);
   SwitchLed(Leds::Blue2, 0);
   SwitchLed(Leds::Blue3, 0);
   SwitchLed(Leds::Red1, 0);
   SwitchLed(Leds::Red2, 0);
   SwitchLed(Leds::Red3, 0);
+    #if (DEBUG == 0)
+
   chase(strip.Color(0, 255, 0)); // Green
+    #endif
+
   SwitchLed(Leds::Blue1, 1);
   SwitchLed(Leds::Blue2, 1);
   SwitchLed(Leds::Blue3, 1);
   SwitchLed(Leds::Red1, 1);
   SwitchLed(Leds::Red2, 1);
   SwitchLed(Leds::Red3, 1);
+    #if (DEBUG == 0)
+
   chase(strip.Color(0, 0, 255)); // Blue
+    #endif
+
   SwitchLed(Leds::Blue1, 0);
   SwitchLed(Leds::Blue2, 0);
   SwitchLed(Leds::Blue3, 0);
