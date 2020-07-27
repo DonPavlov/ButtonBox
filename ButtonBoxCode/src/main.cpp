@@ -4,26 +4,26 @@
 #include "Adafruit_LEDBackpack.h"
 #include "Adafruit_NeoPixel.h"
 
-#define ARCADE_N (14)
-#define ARCADE_S (15)
-#define ARCADE_W (16)
-#define ARCADE_E (17)
+// #define ARCADE_N (14)
+// #define ARCADE_S (15)
+// #define ARCADE_W (16)
+// #define ARCADE_E (17)
 
-#define SPEAKER (0)        // Disconnect while uploading
-#define NEOPIXEL_RING (1)  
-#define LED_COL_1 (2)
-#define LED_COL_2 (3)
-#define LED_COL_3 (4)
-#define LED_ROW_1 (5)
-#define LED_ROW_2 (6)
+#define SPEAKER (10)        // Disconnect while uploading
+#define NEOPIXEL_RING (22)
+// #define LED_COL_1 (2)
+// #define LED_COL_2 (3)
+// #define LED_COL_3 (4)
+// #define LED_ROW_1 (5)
+// #define LED_ROW_2 (6)
 
-#define BUTTON_COL_1 (7)
-#define BUTTON_COL_2 (8)
-#define BUTTON_COL_3 (9)
-#define BUTTON_ROW_1 (10)
-#define BUTTON_ROW_2 (11)
-#define BUTTON_ROW_3 (12)
-#define TOGGLE_LEDS (13)
+// #define BUTTON_COL_1 (7)
+// #define BUTTON_COL_2 (8)
+// #define BUTTON_COL_3 (9)
+// #define BUTTON_ROW_1 (10)
+// #define BUTTON_ROW_2 (11)
+// #define BUTTON_ROW_3 (12)
+// #define TOGGLE_LEDS (13)
 #define N_LEDS (16)
 
 #define DEBUG 0
@@ -81,25 +81,25 @@ void setup() {
 #endif
 
   // Init Arcade
-  pinMode(ARCADE_N, INPUT_PULLUP);
-  pinMode(ARCADE_S, INPUT_PULLUP);
-  pinMode(ARCADE_W, INPUT_PULLUP);
-  pinMode(ARCADE_E, INPUT_PULLUP);
-  
-  // Init LEDs to off
-  pinMode(LED_ROW_1, OUTPUT);
-  pinMode(LED_ROW_2, OUTPUT);
-  pinMode(LED_COL_1, OUTPUT);   // TODO verify, might break something watch this.
-  pinMode(LED_COL_2, OUTPUT);   
-  pinMode(LED_COL_3, OUTPUT);   
-  
-  // TODO(Add led control functions and defines for LED 1-6)
-  // ALL LEDS OFF
-  digitalWrite(LED_ROW_1, HIGH);
-  digitalWrite(LED_ROW_2, HIGH);
-  digitalWrite(LED_COL_1, LOW);
-  digitalWrite(LED_COL_2, LOW);
-  digitalWrite(LED_COL_3, LOW);
+  // pinMode(ARCADE_N, INPUT_PULLUP);
+  // pinMode(ARCADE_S, INPUT_PULLUP);
+  // pinMode(ARCADE_W, INPUT_PULLUP);
+  // pinMode(ARCADE_E, INPUT_PULLUP);
+
+  // // Init LEDs to off
+  // pinMode(LED_ROW_1, OUTPUT);
+  // pinMode(LED_ROW_2, OUTPUT);
+  // pinMode(LED_COL_1, OUTPUT);   // TODO verify, might break something watch this.
+  // pinMode(LED_COL_2, OUTPUT);
+  // pinMode(LED_COL_3, OUTPUT);
+
+  // // TODO(Add led control functions and defines for LED 1-6)
+  // // ALL LEDS OFF
+  // digitalWrite(LED_ROW_1, HIGH);
+  // digitalWrite(LED_ROW_2, HIGH);
+  // digitalWrite(LED_COL_1, LOW);
+  // digitalWrite(LED_COL_2, LOW);
+  // digitalWrite(LED_COL_3, LOW);
   // delay(1000);
 
   // SwitchLed(Leds::Blue1, 1);
@@ -130,50 +130,50 @@ void setup() {
 
 
 void loop() {
-  static uint16_t data = 0;  
-  
+  static uint16_t data = 0;
+
   matrix.print(data, DEC);
   matrix.writeDisplay();
-  SwitchLed(Leds::Blue1, 1);
-  SwitchLed(Leds::Blue2, 1);
-  SwitchLed(Leds::Blue3, 1);
-  SwitchLed(Leds::Red1, 1);
-  SwitchLed(Leds::Red2, 1);
-  SwitchLed(Leds::Red3, 1);
+  // SwitchLed(Leds::Blue1, 1);
+  // SwitchLed(Leds::Blue2, 1);
+  // SwitchLed(Leds::Blue3, 1);
+  // SwitchLed(Leds::Red1, 1);
+  // SwitchLed(Leds::Red2, 1);
+  // SwitchLed(Leds::Red3, 1);
   #if (DEBUG == 0)
   chase(strip.Color(255, 0, 0)); // Red
   #endif
-  SwitchLed(Leds::Blue1, 0);
-  SwitchLed(Leds::Blue2, 0);
-  SwitchLed(Leds::Blue3, 0);
-  SwitchLed(Leds::Red1, 0);
-  SwitchLed(Leds::Red2, 0);
-  SwitchLed(Leds::Red3, 0);
+  // SwitchLed(Leds::Blue1, 0);
+  // SwitchLed(Leds::Blue2, 0);
+  // SwitchLed(Leds::Blue3, 0);
+  // SwitchLed(Leds::Red1, 0);
+  // SwitchLed(Leds::Red2, 0);
+  // SwitchLed(Leds::Red3, 0);
     #if (DEBUG == 0)
 
   chase(strip.Color(0, 255, 0)); // Green
     #endif
 
-  SwitchLed(Leds::Blue1, 1);
-  SwitchLed(Leds::Blue2, 1);
-  SwitchLed(Leds::Blue3, 1);
-  SwitchLed(Leds::Red1, 1);
-  SwitchLed(Leds::Red2, 1);
-  SwitchLed(Leds::Red3, 1);
+  // SwitchLed(Leds::Blue1, 1);
+  // SwitchLed(Leds::Blue2, 1);
+  // SwitchLed(Leds::Blue3, 1);
+  // SwitchLed(Leds::Red1, 1);
+  // SwitchLed(Leds::Red2, 1);
+  // SwitchLed(Leds::Red3, 1);
     #if (DEBUG == 0)
 
   chase(strip.Color(0, 0, 255)); // Blue
     #endif
 
-  SwitchLed(Leds::Blue1, 0);
-  SwitchLed(Leds::Blue2, 0);
-  SwitchLed(Leds::Blue3, 0);
-  SwitchLed(Leds::Red1, 0);
-  SwitchLed(Leds::Red2, 0);
-  SwitchLed(Leds::Red3, 0);
+  // SwitchLed(Leds::Blue1, 0);
+  // SwitchLed(Leds::Blue2, 0);
+  // SwitchLed(Leds::Blue3, 0);
+  // SwitchLed(Leds::Red1, 0);
+  // SwitchLed(Leds::Red2, 0);
+  // SwitchLed(Leds::Red3, 0);
   data++;
-  ReadButtons();
-  HandleButtons();
+  // ReadButtons();
+  // HandleButtons();
 }
 
 #if (DEBUG == 0)
@@ -187,7 +187,7 @@ void chase(uint32_t c) {
   }
 }
 #endif
-
+/*
 void SwitchLed(Leds led, uint8_t enabled){
     uint8_t column, row = 0;
     uint8_t inverted = 0;
@@ -226,17 +226,19 @@ void SwitchLed(Leds led, uint8_t enabled){
 
   if(led == Leds::Toggles) {
     digitalWrite(TOGGLE_LEDS, enabled);
-  
+
   } else {
     digitalWrite(row, inverted);
     digitalWrite(column, enabled);
   }
-  
-  
+
+
 }
+*/
+
 
 // TODO(ph) Button matrix failed....
-
+/*
 void ReadButtons() {
   if (digitalRead(BUTTON_ROW_1) == 0) {
     if(digitalRead(BUTTON_COL_1) == 0) {
@@ -244,7 +246,7 @@ void ReadButtons() {
       #if (DEBUG == 1)
       Serial.println("Blue1 pressed");
       #endif
-    } else{ buttonStates.toggle1 = false; 
+    } else{ buttonStates.toggle1 = false;
           #if (DEBUG == 1)
 
       Serial.println("Blue1 released");
@@ -305,5 +307,6 @@ void HandleButtons() {
   if(buttonStates.red2) {
     SwitchLed(Leds::Red2, 1);
   } else { SwitchLed(Leds::Red2, 0); }
-  
+
 }
+*/
