@@ -1,8 +1,13 @@
-#include <Arduino.h>
 #include <Wire.h>
-#include <Adafruit_GFX.h>
-#include "Adafruit_LEDBackpack.h"
+#include <Adafruit_GFX.h> 
+#include "Adafruit_LEDBackpack.h" 
 #include "Adafruit_NeoPixel.h"
+#include "SPI.h"
+#include "NRFLite.h"
+#include "pitches.h"
+
+// Some libraries fail to compile correctly in platformio
+
 
 #define ARCADE_N (34)
 #define ARCADE_S (35)
@@ -14,12 +19,12 @@
 #define NEOPIXEL_RING (22)
 #define N_LEDS (16)
 
-#define LED_RED_1 (2)
-#define LED_RED_2 (3)
-#define LED_RED_3 (4)
-#define LED_BLUE_1 (5)
-#define LED_BLUE_2 (6)
-#define LED_BLUE_3 (7)
+#define LED_RED_1 (5)
+#define LED_RED_2 (6)
+#define LED_RED_3 (7)
+#define LED_BLUE_1 (2)
+#define LED_BLUE_2 (3)
+#define LED_BLUE_3 (4)
 
 #define BUTTON_TOGGLE_1 (23)
 #define BUTTON_TOGGLE_2 (17)
@@ -72,11 +77,12 @@ ButtonArrray_t buttonStates;
 
 void SwitchLed(Leds led, uint8_t enabled);
 void ReadButtons();
-void HandleButtons();
 void IncreaseCount(void);
-
+void HandleStick(void);
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDS, NEOPIXEL_RING, NEO_GRB + NEO_KHZ800);
 Adafruit_7segment matrix = Adafruit_7segment();
+NRFLite _radio;
+uint8_t _data;
 
 
 void setup() {
@@ -87,6 +93,11 @@ void setup() {
   strip.setBrightness(1);    // lower brightness for toddlers
   strip.show(); // Initialize all pixels to 'off'
 
+  _radio.init(0, NRF_CE, NRF_CS); // Set transmitter radio to Id = 0, along with the CE and CSN pins
+  _data++; // Change some data.
+  _radio.send(1, &_data, sizeof(_data)); // Send to the radio with Id = 1
+  delay(1000);
+  
   // Init Arcade
   pinMode(ARCADE_N, INPUT_PULLUP);
   pinMode(ARCADE_S, INPUT_PULLUP);
@@ -142,22 +153,14 @@ void setup() {
   buttonStates.down = false;
   buttonStates.left = false;
   buttonStates.right = false;
+  matrix.print(0000);
+  matrix.writeDisplay();
 }
 
 
 void loop() {
-  static uint16_t data = 0;
-
-  matrix.print(data, DEC);
-  matrix.writeDisplay();
-
-  //chase(strip.Color(255, 0, 0));
-  //chase(strip.Color(0, 255, 0));
-  //chase(strip.Color(0, 0, 255));
-
-  data++;
   ReadButtons();
-  // HandleButtons();
+  HandleStick();
 }
 
 
@@ -280,4 +283,20 @@ void IncreaseCount(void) {
   }
   matrix.print(count, DEC);
   matrix.writeDisplay();
+}
+
+void HandleStick(void) {
+  if(buttonStates.up) {
+    strip.fill(strip.Color(0, 255, 0), 0, N_LEDS);
+    strip.show();
+  } else if (buttonStates.down) {
+    strip.fill(strip.Color(255, 0, 0), 0, N_LEDS);
+    strip.show();
+  } else if (buttonStates.left) {
+    strip.fill(strip.Color(0, 0, 255), 0, N_LEDS);
+    strip.show();
+  } else if (buttonStates.right) {
+    strip.fill(strip.Color(150, 150, 150), 0, N_LEDS);
+    strip.show();
+  }
 }
