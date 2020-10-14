@@ -11,3 +11,10 @@ So i used the fastes way use the good old Arduino IDE.
 Here it seems to work.
 
 You are advised to also use the [btnBox.ino](ButtonBoxArduinoIDE\btnBox\btnBox.ino) sketch from the [ButtonBoxArduinoIDE\btnBox](ButtonBoxArduinoIDE\btnBox) folder.
+
+
+### Schematic of it
+
+Here is a nice Fritzing file you can use. [button_box.fzz](button_box.fzz)
+It creates the following schematic:
+![Schematic](./button_box_Schaltplan.svg)
