@@ -1,9 +1,9 @@
-### Repository for creating a ButtonBox
+# Repository for creating a ButtonBox
 
 To best use this repository open the folder ButtonBoxCode with Platformio in VSCode.
 This way you get the best out of it.
 
-### Problems with Platformio
+# Problems with Platformio
 It first started out in Platformio on VSCode.
 But after adding too many libraries it stopped compiling and i did not have the time to fix it.
 
@@ -13,8 +13,17 @@ Here it seems to work.
 You are advised to also use the [btnBox.ino](ButtonBoxArduinoIDE\btnBox\btnBox.ino) sketch from the [ButtonBoxArduinoIDE\btnBox](ButtonBoxArduinoIDE\btnBox) folder.
 
 
-### Schematic of it
+# Schematic of it
 
 Here is a nice Fritzing file you can use. [button_box.fzz](button_box.fzz)
 It creates the following schematic:
 ![Schematic](./button_box_Schaltplan.svg)
+
+# Future Upgrades
+Available are the following things:
+
+* Speaker is integrated
+    * Possible to add audio 
+* Use the integrated NRF24l01
+    * Possibility to control a future RC-Car 
+
