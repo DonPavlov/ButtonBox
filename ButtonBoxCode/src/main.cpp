@@ -51,7 +51,7 @@ const char TRAIN_REFILL = "2";      // B1
 const char TRAIN_HORN = "3";        // B2
 const char TRAIN_DEPARTURE = "4";   // R3
 const char TRAIN_STEAM = "5";       // B3
-const char TRAIN_LIGHT = "6";
+const char TRAIN_LIGHT = "6";       // L
 
 void chase(uint32_t c);
 
