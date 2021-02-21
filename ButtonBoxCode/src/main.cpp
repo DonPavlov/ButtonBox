@@ -37,8 +37,21 @@
 #define NRF_SCK  (52)
 #define NRF_CE (49)
 
-
 #define DEBUG 1
+
+#define TXD3 (14)
+#define RXD3 (15)
+
+// Train control
+const char TRAIN_FORWARD = "F";     // U
+const char TRAIN_BACKWARD = "B";    // D
+const char TRAIN_STOP = "S";        // R1
+const char TRAIN_BRAKE = "1";       // R2
+const char TRAIN_REFILL = "2";      // B1
+const char TRAIN_HORN = "3";        // B2
+const char TRAIN_DEPARTURE = "4";   // R3
+const char TRAIN_STEAM = "5";       // B3
+const char TRAIN_LIGHT = "6";
 
 void chase(uint32_t c);
 
@@ -74,6 +87,7 @@ void SwitchLed(Leds led, uint8_t enabled);
 void ReadButtons();
 void HandleButtons();
 void IncreaseCount(void);
+void SendEsp32(char cmd);
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDS, NEOPIXEL_RING, NEO_GRB + NEO_KHZ800);
 Adafruit_7segment matrix = Adafruit_7segment();
@@ -81,11 +95,12 @@ Adafruit_7segment matrix = Adafruit_7segment();
 
 void setup() {
   Serial.begin(115200);             // Serial uses TX and RX Pins 0 + 1
+  Serial3.begin(115200);
   Serial.println("ButtonBox TestCode\r\n");
-  matrix.begin(0x70); // Init I2C Display
-  strip.begin();      // Init LED Strip
+  matrix.begin(0x70);   // Init I2C Display
+  strip.begin();        // Init LED Strip
   strip.setBrightness(1);    // lower brightness for toddlers
-  strip.show(); // Initialize all pixels to 'off'
+  strip.show();   // Initialize all pixels to 'off'
 
   // Init Arcade
   pinMode(ARCADE_N, INPUT_PULLUP);
@@ -94,7 +109,6 @@ void setup() {
   pinMode(ARCADE_E, INPUT_PULLUP);
 
   // Init Buttons and Toggle
-
   pinMode(BUTTON_RED_1, INPUT_PULLUP);
   pinMode(BUTTON_RED_2, INPUT_PULLUP);
   pinMode(BUTTON_RED_3, INPUT_PULLUP);
@@ -157,7 +171,6 @@ void loop() {
 
   data++;
   ReadButtons();
-  // HandleButtons();
 }
 
 
@@ -177,6 +190,7 @@ void ReadButtons() {
     }
     Serial.println("Up pressed");
     buttonStates.up = true;
+    SendEsp32(TRAIN_FORWARD);
   } else {buttonStates.up = false;}
   if (digitalRead(ARCADE_S) == 0) {
     if(!buttonStates.down) {
@@ -184,7 +198,7 @@ void ReadButtons() {
     }
     Serial.println("Down pressed");
     buttonStates.down = true;
-
+    SendEsp32(TRAIN_BACKWARD);
   } else {buttonStates.down = false;}
   if (digitalRead(ARCADE_W) == 0) {
     if(!buttonStates.left) {
@@ -192,6 +206,7 @@ void ReadButtons() {
     }
     Serial.println("Left pressed");
     buttonStates.left = true;
+    SendEsp32(TRAIN_DEPARTURE);
   } else {buttonStates.left = false;}
   if (digitalRead(ARCADE_E) == 0) {
     if(!buttonStates.right) {
@@ -199,7 +214,6 @@ void ReadButtons() {
     }
     Serial.println("Right pressed");
     buttonStates.right = true;
-
   } else {buttonStates.right = false;}
   if (digitalRead(BUTTON_RED_1) == 0) {
     Serial.println("Red1 pressed");
@@ -208,6 +222,7 @@ void ReadButtons() {
     }
     buttonStates.red1 = true;
     digitalWrite(LED_RED_1, HIGH);
+    SendEsp32(TRAIN_STOP);
   } else {
     buttonStates.red1 = false;
     digitalWrite(LED_RED_1, LOW);
@@ -219,6 +234,7 @@ void ReadButtons() {
     }
     buttonStates.red2 = true;
     digitalWrite(LED_RED_2, HIGH);
+    SendEsp32(TRAIN_BRAKE);
   } else {
     buttonStates.red2 = false;
     digitalWrite(LED_RED_2, LOW);
@@ -227,10 +243,10 @@ void ReadButtons() {
     if(!buttonStates.red3) {
       IncreaseCount();
     }
-
     Serial.println("Red3 pressed");
     buttonStates.red3 = true;
     digitalWrite(LED_RED_3, HIGH);
+    SendEsp32(TRAIN_LIGHT);
   } else {
     buttonStates.red3 = false;
     digitalWrite(LED_RED_3, LOW);
@@ -239,10 +255,10 @@ void ReadButtons() {
     if(!buttonStates.blue1) {
       IncreaseCount();
     }
-
     Serial.println("Blue1 pressed");
     buttonStates.blue1 = true;
     digitalWrite(LED_BLUE_1, HIGH);
+    SendEsp32(TRAIN_REFILL);
   } else {
     buttonStates.blue1 = false;
     digitalWrite(LED_BLUE_1, LOW);
@@ -254,6 +270,7 @@ void ReadButtons() {
     Serial.println("Blue2 pressed");
     buttonStates.blue2 = true;
     digitalWrite(LED_BLUE_2, HIGH);
+    SendEsp32(TRAIN_HORN);
   } else {
     buttonStates.blue2 = false;
     digitalWrite(LED_BLUE_2, LOW);
@@ -265,6 +282,7 @@ void ReadButtons() {
     Serial.println("Blue3 pressed");
     buttonStates.blue3 = true;
     digitalWrite(LED_BLUE_3, HIGH);
+    SendEsp32(TRAIN_STEAM);
   } else {
     buttonStates.blue3 = false;
     digitalWrite(LED_BLUE_3, LOW);
@@ -280,4 +298,8 @@ void IncreaseCount(void) {
   }
   matrix.print(count, DEC);
   matrix.writeDisplay();
+}
+
+void SendEsp32(char cmd) {
+  Serial3.write(cmd);
 }
